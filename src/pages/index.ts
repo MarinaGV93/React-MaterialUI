@@ -1,0 +1,2 @@
+// Export para tudo
+export {};
