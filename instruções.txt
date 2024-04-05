@@ -9,3 +9,9 @@
 
 - Instalar React Router DOM v6
     yarn add react-router-dom@6
+
+- Instalar Material UI v5
+    yarn add @mui/material @emotion/react @emotion/styled
+
+- Instalar ícones SVG
+    yarn add @mui/icons-material

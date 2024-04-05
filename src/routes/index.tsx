@@ -1,5 +1,6 @@
 // Export para tudo
 // export {};
+import { Button } from "@mui/material";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 // Configurar o pacote DOM
@@ -8,7 +9,7 @@ export const AppRoutes = () => {
     // Em torno de todas as rotas
     <Routes>
       {/* Rota */}
-      <Route path="/pagina-inicial" element={<p>Página inicial</p>} />
+      <Route path="/pagina-inicial" element={<Button>Teste</Button>} />
       {/* Se não encontrar a rota, passa para a outra  */}
 
       {/*
