@@ -6,3 +6,6 @@
     
 - Rodando projeto
     yarn start
+
+- Instalar React Router DOM v6
+    yarn add react-router-dom@6
