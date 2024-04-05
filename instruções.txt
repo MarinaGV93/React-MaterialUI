@@ -1,0 +1,5 @@
+- Criar projeto react
+    npx create-react-app react-materialui --template typescript
+
+- Rodando projeto
+    yarn start
