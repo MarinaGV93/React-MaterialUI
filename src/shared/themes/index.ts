@@ -1,2 +1,4 @@
 // Export para tudo
-export {};
+// export {};
+
+export * from "./Light";

@@ -9,7 +9,14 @@ export const AppRoutes = () => {
     // Em torno de todas as rotas
     <Routes>
       {/* Rota */}
-      <Route path="/pagina-inicial" element={<Button>Teste</Button>} />
+      <Route
+        path="/pagina-inicial"
+        element={
+          <Button variant="contained" color="primary">
+            Teste
+          </Button>
+        }
+      />
       {/* Se não encontrar a rota, passa para a outra  */}
 
       {/*
