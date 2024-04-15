@@ -16,6 +16,9 @@
 - Instalar ícones SVG
     yarn add @mui/icons-material
 
-- Configurar tema mui
-    - Light
-        
+- Configurar troca de temas
+    Arquivo ThemeContext.tsx em context    
+
+- Remover configurações padrão do HTML
+    Arquivo index.html em public
+        style="margin: 0; padding: 0"
