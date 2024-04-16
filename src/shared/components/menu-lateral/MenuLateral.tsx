@@ -1,4 +1,4 @@
-import { TramSharp } from "@mui/icons-material";
+// import { TramSharp } from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -23,6 +23,7 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
 
   return (
     <>
+      {/* Menu lateral */}
       <Drawer
         // Sempre aberto
         //  open={true}
@@ -76,11 +77,13 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
           </Box>
         </Box>
       </Drawer>
+
+      {/* Conteúdo centro */}
       <Box
         height="100vh"
         // spacing = funçao que retorna string. Multiplos de 4. Usa mais quando for definir espaços fixos.
-        // 28 * 4 = 112px
-        marginLeft={theme.spacing(28)}
+        //  32 * 4 = 128px
+        marginLeft={theme.spacing(32)}
       >
         {children}
       </Box>
