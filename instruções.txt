@@ -22,3 +22,5 @@
 - Remover configurações padrão do HTML
     Arquivo index.html em public
         style="margin: 0; padding: 0"
+
+- Componente Drawer, para menu lateral

@@ -1,6 +1,7 @@
 import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes";
 import { AppThemeProvider } from "./shared/contexts";
+import { MenuLateral } from "./shared/components/menu-lateral/MenuLateral";
 
 export const App = () => {
   return (
@@ -9,8 +10,11 @@ export const App = () => {
       {/* Troca de tema */}
       {/* Fornece o contexto para o DOM funcionar corretamente */}
       <BrowserRouter>
-        {/* Chamar as rotas */}
-        <AppRoutes />
+        {/* Menu lateral */}
+        <MenuLateral>
+          {/* Chamar as rotas */}
+          <AppRoutes />
+        </MenuLateral>
       </BrowserRouter>
     </AppThemeProvider>
   );

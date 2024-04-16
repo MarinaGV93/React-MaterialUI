@@ -1,2 +1,2 @@
 // Export para tudo
-export {};
+export * from "./menu-lateral/MenuLateral";
