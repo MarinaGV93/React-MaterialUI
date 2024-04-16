@@ -9,8 +9,10 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { useDrawerContext } from "../../contexts";
 
 interface IMenuLateralProps {
   // Filho = AppRoutes
@@ -21,17 +23,27 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
   // Acessar o tema base e acessar tdas as propriedades,  do light e dark
   const theme = useTheme();
 
+  // Se a tela for menor que sm(600px)
+  //  Passar um valor de entrada, que é o tema
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // Contexto
+  const { isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
+
   return (
     <>
       {/* Menu lateral */}
       <Drawer
         // Sempre aberto
-        //  open={true}
+        open={isDrawerOpen}
+        // Fechar menu
+        onClose={toggleDrawerOpen}
         // Variante
         //  permanent = fixo
         //  persistent = fixo mas ao minimizar, diminui  tudo do lado
         //  temporary = fica por cima (padrao)
-        variant="permanent"
+        //    Se for menor que sm = temporary, senao = permanent
+        variant={smDown ? "temporary" : "permanent"}
       >
         {/* Ocupar todo espaço disponível */}
         <Box
@@ -83,7 +95,7 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
         height="100vh"
         // spacing = funçao que retorna string. Multiplos de 4. Usa mais quando for definir espaços fixos.
         //  32 * 4 = 128px
-        marginLeft={theme.spacing(32)}
+        marginLeft={smDown ? 0 : theme.spacing(32)}
       >
         {children}
       </Box>
