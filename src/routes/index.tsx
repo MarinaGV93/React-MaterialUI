@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import { Routes, Route, Navigate } from "react-router-dom";
 // import { useAppThemeContext } from "../shared/contexts";
 import { useDrawerContext } from "../shared/contexts";
+import { useEffect } from "react";
 
 // Configurar o pacote DOM
 export const AppRoutes = () => {
@@ -11,7 +12,19 @@ export const AppRoutes = () => {
   //  const { toggleTheme } = useAppThemeContext();
 
   // Botão mostrar ou fechar menu
-  const { toggleDrawerOpen } = useDrawerContext();
+  const { toggleDrawerOpen, setDrawerOptions } = useDrawerContext();
+
+  //Garantir que seja executado somente 1 vez
+  useEffect(() => {
+    setDrawerOptions([
+      {
+        // Passar as chaves
+        icon: "home",
+        path: "/pagina-inicial",
+        label: "Página inicial",
+      },
+    ]);
+  }, []);
 
   return (
     // Em torno de todas as rotas

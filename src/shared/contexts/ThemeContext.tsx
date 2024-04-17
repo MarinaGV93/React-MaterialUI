@@ -46,7 +46,9 @@ export const AppThemeProvider: React.FC<IAppThemeProviderProps> = ({
   // Passar com parametro
   const [themeName, setThemeName] = useState<"light" | "dark">("light");
 
-  // useCallback = capacidade de armazenar uma função em memoria. Faz com que a função não seja reconstruida toda vez que um state for alterado (renderizado)
+  // useCallback = capacidade de armazenar uma função em memoria.
+  // Faz com que a função não seja reconstruida toda vez que um state for alterado (renderizado)
+  // Usado mais para função que for usar em mais lugares
   //  Passar 2 argumentos:
   //    1º - uma função. Vai ser armazenada
   //    2º - array de dependencias. Sempre que uma das dependencias for alterada, a função vai ser executada

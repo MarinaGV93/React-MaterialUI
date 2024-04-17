@@ -13,11 +13,71 @@ import {
   useTheme,
 } from "@mui/material";
 import { useDrawerContext } from "../../contexts";
+import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 
 interface IMenuLateralProps {
   // Filho = AppRoutes
   children: React.ReactNode;
 }
+
+interface IListItemLinkProps {
+  // Texto do menu
+  label: string;
+
+  // Nome do icone
+  icon: string;
+
+  // Caminho da rota
+  to: string;
+
+  // Ao clicar, fechar menu
+  // Também pode ser undefined
+  onClick: (() => void) | undefined;
+}
+
+// Receber algumas propriedades das opções de menu
+const ListItemLink: React.FC<IListItemLinkProps> = ({
+  label,
+  icon,
+  to,
+  onClick,
+}) => {
+  const navigate = useNavigate();
+
+  // Para resolver e deixar algumas configurações disponíveis
+  //  Recebe por parametro a rota
+  const resolvedPath = useResolvedPath(to);
+
+  // Resolver de saber se a rota está selecionada ou não
+  const match = useMatch({ path: resolvedPath.pathname, end: false });
+  // Se for diferente de nulo, significa que encontrou a rota
+
+  const handleClick = () => {
+    // Ao clicar, navegue para outra tela
+    navigate(to);
+
+    // Fechar menu
+    //  onClick && onClick();
+    //  if (onClick) onClick();
+    // Se a função for undefined, não faz nada, senão, executa a função
+    onClick?.();
+  };
+
+  return (
+    <ListItemButton selected={!!match} onClick={onClick}>
+      {/* Uma opção de menu */}
+      <ListItemIcon>
+        {/* <TramSharp /> */}
+        <Icon>
+          {/* Nome do icone */}
+          {/* home */}
+          {icon}
+        </Icon>
+      </ListItemIcon>
+      <ListItemText primary={label} />
+    </ListItemButton>
+  );
+};
 
 export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
   // Acessar o tema base e acessar tdas as propriedades,  do light e dark
@@ -28,7 +88,7 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   // Contexto
-  const { isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
+  const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
 
   return (
     <>
@@ -75,16 +135,17 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
             flex={1}
           >
             <List component="nav">
-              <ListItemButton>
-                <ListItemIcon>
-                  {/* <TramSharp /> */}
-                  <Icon>
-                    {/* Nome do icone */}
-                    home
-                  </Icon>
-                </ListItemIcon>
-                <ListItemText primary="Página inicial" />
-              </ListItemButton>
+              {drawerOptions.map((drawerOptions) => (
+                <ListItemLink
+                  // Sempre informar quando está usando dentro de um map
+                  key={drawerOptions.path}
+                  label={drawerOptions.label}
+                  icon={drawerOptions.icon}
+                  to={drawerOptions.path}
+                  // Não altere o valor toda vez que clicar
+                  onClick={smDown ? toggleDrawerOpen : undefined}
+                />
+              ))}
             </List>
           </Box>
         </Box>
