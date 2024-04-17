@@ -14,7 +14,8 @@ export const AppRoutes = () => {
   // Botão mostrar ou fechar menu
   const { toggleDrawerOpen, setDrawerOptions } = useDrawerContext();
 
-  //Garantir que seja executado somente 1 vez
+  // Fazer alguns efeitos
+  //   Garantir que seja executado somente 1 vez, sem ficar renderizando
   useEffect(() => {
     setDrawerOptions([
       {
