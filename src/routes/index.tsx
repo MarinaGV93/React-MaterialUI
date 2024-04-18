@@ -1,10 +1,11 @@
 // Export para tudo
 // export {};
-import { Button } from "@mui/material";
+// import { Button } from "@mui/material";
 import { Routes, Route, Navigate } from "react-router-dom";
 // import { useAppThemeContext } from "../shared/contexts";
 import { useDrawerContext } from "../shared/contexts";
 import { useEffect } from "react";
+import { Dashboard } from "../pages";
 
 // Configurar o pacote DOM
 export const AppRoutes = () => {
@@ -12,7 +13,10 @@ export const AppRoutes = () => {
   //  const { toggleTheme } = useAppThemeContext();
 
   // Botão mostrar ou fechar menu
-  const { toggleDrawerOpen, setDrawerOptions } = useDrawerContext();
+  const {
+    // toggleDrawerOpen,
+    setDrawerOptions,
+  } = useDrawerContext();
 
   // Fazer alguns efeitos
   //   Garantir que seja executado somente 1 vez, sem ficar renderizando
@@ -34,14 +38,15 @@ export const AppRoutes = () => {
       <Route
         path="/pagina-inicial"
         element={
-          <Button
-            variant="contained"
-            color="primary"
-            // onClick={toggleTheme}
-            onClick={toggleDrawerOpen}
-          >
-            Trocar tema
-          </Button>
+          <Dashboard />
+          // <Button
+          //   variant="contained"
+          //   color="primary"
+          //   // onClick={toggleTheme}
+          //   onClick={toggleDrawerOpen}
+          // >
+          //   Trocar tema
+          // </Button>
         }
       />
       {/* Se não encontrar a rota, passa para a outra  */}

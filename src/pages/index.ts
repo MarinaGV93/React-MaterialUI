@@ -1,2 +1,1 @@
-// Export para tudo
-export {};
+export * from "./dashboard/Dashboard";

@@ -1,3 +1,4 @@
+// Para menu lateral
 import React, { createContext, useCallback, useContext, useState } from "react";
 
 interface IDrawerContextProps {

@@ -155,8 +155,8 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
       <Box
         height="100vh"
         // spacing = funçao que retorna string. Multiplos de 4. Usa mais quando for definir espaços fixos.
-        //  32 * 4 = 128px
-        marginLeft={smDown ? 0 : theme.spacing(32)}
+        //  28 * 4 = 112px
+        marginLeft={smDown ? 0 : theme.spacing(28)}
       >
         {children}
       </Box>
