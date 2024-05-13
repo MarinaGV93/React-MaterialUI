@@ -12,7 +12,9 @@ export const Dashboard = () => {
         // />
         <FerramentasDeDetalhe
           mostrarBotaoSalvarEFechar
+          mostrarBotaoNovo
           mostrarBotaoSalvarEFecharCarregando
+          // mostrarBotaoVoltar={false}
         />
       }
     >
