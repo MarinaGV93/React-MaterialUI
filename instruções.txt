@@ -50,3 +50,7 @@
     
         -Rodar script
             yarn mock
+
+- Facilitar as consultas do BACKEND (JSON server)
+    - Instalar
+        yarn add axios
