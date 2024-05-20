@@ -22,3 +22,31 @@
 - Remover configurações padrão do HTML
     Arquivo index.html em public
         style="margin: 0; padding: 0"
+
+
+- Simular BACKEND com JSON Server
+    - Instalar
+        npm install -g json-server
+    
+    - Instalar como dependencia de desenvolvimento (bom para o time nao precisar instalar na maquina. Não vai para produção)
+        yarn add -D json-server
+    
+    - 'Escutando' (-w/--watch), 'porta que irá rodar' (-p) e o caminho para o arquivo
+        - Quando rodar globalmente
+            json-server -w -p 3333 ./mock/database.json
+        
+        - Quando rodar em dependencia
+            yarn run json-server -w -p 3333 ./mock/database.json
+
+    - Testar 
+        - Com o método de GET
+            URL do endpoint http://localhost:3333/pessoas
+
+        - Se tiver algo noo array
+            Passando / e o numero do id http://localhost:3333/pessoas/1
+    - Adicionar como script
+        - Em scripts no arquivo package.json para automatizar
+        "mock": "json-server -w -p 3333 ./mock/database.json"
+    
+        -Rodar script
+            yarn mock
