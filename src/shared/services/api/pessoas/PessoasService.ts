@@ -68,14 +68,85 @@ const getAll = async (
     );
   }
 };
-// Trazer alguns registros
-const getById = async (): Promise<any> => {};
 
-const create = async (): Promise<any> => {};
+/**
+ * Consulta do registro
+ */
+const getById = async (id: number): Promise<IDetalhePessoa | Error> => {
+  try {
+    const { data } = await Api.get(`/pessoas/${id}`);
 
-const updateById = async (): Promise<any> => {};
+    if (data) {
+      return data;
+    }
 
-const deleteById = async (): Promise<any> => {};
+    return new Error("Erro ao consultar o registro");
+  } catch (e) {
+    console.error(e);
+    return new Error(
+      (e as { message: string }).message || "Erro ao consultar o registro"
+    );
+  }
+};
+
+/**
+ * Criar registro
+ */
+// Omit = esconder algum atributo (id)
+const create = async (
+  dados: Omit<IDetalhePessoa, "id">
+): Promise<number | Error> => {
+  try {
+    // post = envia dados pro BACKEND <dizendo qual o tipo do dado>
+    // Manda os dados junto
+    const { data } = await Api.post<IDetalhePessoa>("/pessoas", dados);
+
+    if (data) {
+      // A resposta sera sempre o ID que foi criado
+      return data.id;
+    }
+
+    return new Error("Erro ao criar o registro");
+  } catch (e) {
+    console.error(e);
+    return new Error(
+      (e as { message: string }).message || "Erro ao criar o registro"
+    );
+  }
+};
+
+/**
+ * Atualizar o registro
+ */
+// void = retornar nada
+const updateById = async (
+  id: number,
+  dados: IDetalhePessoa
+): Promise<void | Error> => {
+  try {
+    // put= atualizar
+    await Api.put(`/pessoas/${id}`, dados);
+  } catch (e) {
+    console.error(e);
+    return new Error(
+      (e as { message: string }).message || "Erro ao atualizar o registro"
+    );
+  }
+};
+
+/**
+ * Apagar o registro
+ */
+const deleteById = async (id: number): Promise<void | Error> => {
+  try {
+    await Api.delete(`/pessoas/${id}`);
+  } catch (e) {
+    console.error(e);
+    return new Error(
+      (e as { message: string }).message || "Erro ao apagar o registro"
+    );
+  }
+};
 
 // SERVICE
 // Criar metodos e tratar (como a tipagem)
