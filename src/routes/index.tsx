@@ -5,7 +5,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 // import { useAppThemeContext } from "../shared/contexts";
 import { useDrawerContext } from "../shared/contexts";
 import { useEffect } from "react";
-import { Dashboard, ListagemDeCidade } from "../pages";
+import { Dashboard, ListagemDePessoas } from "../pages";
 
 // Configurar o pacote DOM
 export const AppRoutes = () => {
@@ -29,9 +29,9 @@ export const AppRoutes = () => {
         label: "Página inicial",
       },
       {
-        icon: "location_city",
-        path: "/cidades",
-        label: "Cidades",
+        icon: "people",
+        path: "/pessoas",
+        label: "Pessoas",
       },
     ]);
   }, []);
@@ -55,10 +55,10 @@ export const AppRoutes = () => {
         }
       />
 
-      <Route path="/cidades" element={<ListagemDeCidade />} />
+      <Route path="/pessoas" element={<ListagemDePessoas />} />
 
       {/* Para edição */}
-      {/* <Route path="/cidades/detalhe/:id" element={<ListagemDeCidade />} /> */}
+      {/* <Route path="/pessoas/detalhe/:id" element={<ListagemDePessoas />} /> */}
 
       {/* Se não encontrar a rota, passa para a outra  */}
 

@@ -5,9 +5,9 @@ import { Api } from "../axios-config";
 
 interface IListagemPessoa {
   id: number;
-  nomeCompleto: string;
   email: string;
   cidadeId: number;
+  nomeCompleto: string;
 }
 
 interface IDetalhePessoa {
