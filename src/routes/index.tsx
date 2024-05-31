@@ -55,7 +55,10 @@ export const AppRoutes = () => {
         }
       />
 
-      <Route path="/pessoas" element={<ListagemDePessoas />} />
+      <Route
+        path="/pessoas"
+        element={<ListagemDePessoas children={undefined} />}
+      />
 
       {/* Para edição */}
       {/* <Route path="/pessoas/detalhe/:id" element={<ListagemDePessoas />} /> */}
