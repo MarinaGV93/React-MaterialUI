@@ -1,7 +1,9 @@
 // Export para tudo
 // export {};
+
 // import { Button } from "@mui/material";
 import { Routes, Route, Navigate } from "react-router-dom";
+
 // import { useAppThemeContext } from "../shared/contexts";
 import { useDrawerContext } from "../shared/contexts";
 import { useEffect } from "react";
@@ -57,7 +59,7 @@ export const AppRoutes = () => {
 
       <Route
         path="/pessoas"
-        element={<ListagemDePessoas children={undefined} />}
+        element={<ListagemDePessoas/>}
       />
 
       {/* Para edição */}

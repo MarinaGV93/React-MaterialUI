@@ -8,20 +8,19 @@ import {
 } from "../../shared/services/api/pessoas/PessoasService";
 import { useDebounce } from "../../shared/hooks";
 import {
+  LinearProgress,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableRow,
 } from "@mui/material";
+import { Environment } from "../../shared/environment";
 
-interface IListagemDePessoasProps {
-  children: React.ReactNode;
-}
-
-export const ListagemDePessoas: React.FC<IListagemDePessoasProps> = () => {
+export const ListagemDePessoas: React.FC = () => {
   // ?.... na URL (Atributos Search)
   // Vai dar como resultado uma lista de alguma, com o 1º item = searchParams 2º item = funções para conseguir dar um SET (resgatar os valores do SearchParams)  coisa
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,14 +41,17 @@ export const ListagemDePessoas: React.FC<IListagemDePessoasProps> = () => {
   // Só vai ser executado em momentos chave
   useEffect(() => {
     setIsLoading(true);
+
     // Impedir que as listagens fiquem consultando o backend o tempo todo
     debounce(() => {
       // Reexecutar a consulta para o backend, dando uma resposta, que pode demorar
       PessoasService.getAll(1, busca)
+
         // Quando retornar
         // Pega o result
         .then((result) => {
           setIsLoading(false);
+
           // Mostrar na tela
           // Se for uma instancia de Erro. Deu erro na hora de consultar os registros no BD?
           if (result instanceof Error) {
@@ -80,6 +82,7 @@ export const ListagemDePessoas: React.FC<IListagemDePessoasProps> = () => {
           aoMudarTextoDeBusca={(texto) =>
             setSearchParams(
               { busca: texto },
+
               // Para nao ficar varias rotas
               { replace: true }
             )
@@ -87,9 +90,6 @@ export const ListagemDePessoas: React.FC<IListagemDePessoasProps> = () => {
         />
       }
     >
-      {isLoading && (
-        
-      )}
       {/* Div da tabela */}
       <TableContainer
         component={Paper}
@@ -119,6 +119,28 @@ export const ListagemDePessoas: React.FC<IListagemDePessoasProps> = () => {
               </TableRow>
             ))}
           </TableBody>
+
+          {totalCount == 0 && !isLoading && (
+            <caption>{Environment.LISTAGEM_VAZIA}</caption>
+          )}
+
+          {/* Rodapé */}
+          <TableFooter>
+            {isLoading && (
+              <TableRow>
+                <TableCell
+                  // Quantas colunas irá oculpar
+                  colSpan={3}
+                >
+                  {/* Progresso Linear */}
+                  <LinearProgress
+                    // Indeterminado
+                    variant="indeterminate"
+                  />
+                </TableCell>
+              </TableRow>
+            )}
+          </TableFooter>
         </Table>
       </TableContainer>
     </LayoutBaseDePagina>
