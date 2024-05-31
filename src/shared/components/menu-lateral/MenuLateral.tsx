@@ -60,12 +60,13 @@ const ListItemLink: React.FC<IListItemLinkProps> = ({
     // Fechar menu
     //  onClick && onClick();
     //  if (onClick) onClick();
+
     // Se a função for undefined, não faz nada, senão, executa a função
     onClick?.();
   };
 
   return (
-    <ListItemButton selected={!!match} onClick={onClick}>
+    <ListItemButton selected={!!match} onClick={handleClick}>
       {/* Uma opção de menu */}
       <ListItemIcon>
         {/* <TramSharp /> */}
