@@ -5,10 +5,12 @@ import { useEffect, useMemo, useState } from "react";
 import {
   IListagemPessoa,
   PessoasService,
+  TPessoasComTotalCount,
 } from "../../shared/services/api/pessoas/PessoasService";
 import { useDebounce } from "../../shared/hooks";
 import {
   LinearProgress,
+  Pagination,
   Paper,
   Table,
   TableBody,
@@ -30,12 +32,17 @@ export const ListagemDePessoas: React.FC = () => {
   // Linhas da tabela
   const [rows, setRows] = useState<IListagemPessoa[]>([]);
   // Guardar a quantidade total de registros que tem no BD
-  const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
 
   const busca = useMemo(() => {
     // Buscar o parametro de 'busca' na URL e vai entregar na const 'busca'
     return searchParams.get("busca") || "";
+  }, [searchParams]);
+
+  // Saber em que pagina esta
+  const pagina = useMemo(() => {
+    return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
 
   // Só vai ser executado em momentos chave
@@ -45,7 +52,7 @@ export const ListagemDePessoas: React.FC = () => {
     // Impedir que as listagens fiquem consultando o backend o tempo todo
     debounce(() => {
       // Reexecutar a consulta para o backend, dando uma resposta, que pode demorar
-      PessoasService.getAll(1, busca)
+      PessoasService.getAll(pagina, busca)
 
         // Quando retornar
         // Pega o result
@@ -66,22 +73,22 @@ export const ListagemDePessoas: React.FC = () => {
           }
         });
     });
-  }, [busca]);
+  }, [busca, pagina]);
 
   return (
     <LayoutBaseDePagina
       titulo="Listagem de pessoas"
       barraDeFerramentas={
         <FerramentasDaListagem
-          textoBotaoNovo="Nova"
           mostrarInputBusca
           // Ao digitar, a URL será alterada com o que foi digitado
           // ?? = A mesma coisa que ||
           // textoDaBusca={searchParams.get("busca") ?? ""}
           textoDaBusca={busca}
+          textoBotaoNovo="Nova"
           aoMudarTextoDeBusca={(texto) =>
             setSearchParams(
-              { busca: texto },
+              { busca: texto, pagina: "1" },
 
               // Para nao ficar varias rotas
               { replace: true }
@@ -94,7 +101,7 @@ export const ListagemDePessoas: React.FC = () => {
       <TableContainer
         component={Paper}
         variant="outlined"
-        // Style
+        // Estilo
         sx={{ m: 1, width: "auto" }}
       >
         <Table>
@@ -111,6 +118,7 @@ export const ListagemDePessoas: React.FC = () => {
 
           {/* Corpo da tabela */}
           <TableBody>
+            {/* Cada linha retorna um table row */}
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>Ações</TableCell>
@@ -120,7 +128,7 @@ export const ListagemDePessoas: React.FC = () => {
             ))}
           </TableBody>
 
-          {totalCount == 0 && !isLoading && (
+          {totalCount === 0 && !isLoading && (
             <caption>{Environment.LISTAGEM_VAZIA}</caption>
           )}
 
@@ -136,6 +144,26 @@ export const ListagemDePessoas: React.FC = () => {
                   <LinearProgress
                     // Indeterminado
                     variant="indeterminate"
+                  />
+                </TableCell>
+              </TableRow>
+            )}
+
+            {totalCount > Environment.LIMITE_DE_LINHAS && (
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <Pagination
+                    // Qual a pagina atual
+                    // page={pagina}
+
+                    // Quantidade de páginas
+                    count={Math.ceil(totalCount / Environment.LIMITE_DE_LINHAS)}
+                    onChange={(_, newPage) =>
+                      setSearchParams(
+                        { busca, pagina: newPage.toString() },
+                        { replace: true }
+                      )
+                    }
                   />
                 </TableCell>
               </TableRow>

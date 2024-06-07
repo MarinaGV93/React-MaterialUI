@@ -4,12 +4,12 @@ import { useCallback, useRef } from "react";
 
 // Pesquisa acontecer depois de 1s que parar de digitar
 // delay = Enquanto tiver usando o debounce, mudar o timeout
-// notDelayFirstTime = nao tenha delay na primeira vez
-export const useDebounce = (delay = 300, notDelayFirstTime = true) => {
+// notDelayInFirstTime = nao tenha delay na primeira vez
+export const useDebounce = (delay = 300, notDelayInFirstTime = true) => {
+  // Ao entrar a primeira vez, ja realizar a consulta
+  const isFirstTime = useRef(notDelayInFirstTime);
   // Se a função for executada antes do timeout, cancela o timeout
   const debouncing = useRef<NodeJS.Timeout>();
-  // Ao entrar a primeira vez, ja realizar a consulta
-  const isFirstTime = useRef(notDelayFirstTime);
 
   const debounce = useCallback(
     (func: () => void) => {

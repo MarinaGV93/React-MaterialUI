@@ -106,7 +106,8 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
         //  permanent = fixo
         //  persistent = fixo mas ao minimizar, diminui  tudo do lado
         //  temporary = fica por cima (padrao)
-        //    Se for menor que sm = temporary, senao = permanent
+
+        // Se for menor que sm = temporary, senao = permanent
         variant={smDown ? "temporary" : "permanent"}
       >
         {/* Ocupar todo espaço disponível */}

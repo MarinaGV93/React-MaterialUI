@@ -12,15 +12,15 @@ export interface IListagemPessoa {
 
 export interface IDetalhePessoa {
   id: number;
-  nomeCompleto: string;
   email: string;
   cidadeId: number;
+  nomeCompleto: string;
 }
 
 // Da listagem de pessoas com a quantidade total que existe no banco de dados
 // Tipar os dados
 
-type IPessosComTotalCount = {
+export type TPessoasComTotalCount = {
   data: IListagemPessoa[];
   totalCount: number;
 };
@@ -33,7 +33,7 @@ type IPessosComTotalCount = {
 const getAll = async (
   page = 1,
   filter = ""
-): Promise<IPessosComTotalCount | Error> => {
+): Promise<TPessoasComTotalCount | Error> => {
   // Consulta o BACKEND. Pode demorar para acontecer a chamada.
   try {
     // Para o page ser dinâmico
@@ -64,7 +64,7 @@ const getAll = async (
     // Se der erro
     return new Error(
       // Irá pegar a msg do erro
-      (e as { message: string }).message || "Erro ao listar os registros"
+      (e as { message: string }).message || "Erro ao listar os registros."
     );
   }
 };
@@ -80,11 +80,11 @@ const getById = async (id: number): Promise<IDetalhePessoa | Error> => {
       return data;
     }
 
-    return new Error("Erro ao consultar o registro");
+    return new Error("Erro ao consultar o registro.");
   } catch (e) {
     console.error(e);
     return new Error(
-      (e as { message: string }).message || "Erro ao consultar o registro"
+      (e as { message: string }).message || "Erro ao consultar o registro."
     );
   }
 };
@@ -110,7 +110,7 @@ const create = async (
   } catch (e) {
     console.error(e);
     return new Error(
-      (e as { message: string }).message || "Erro ao criar o registro"
+      (e as { message: string }).message || "Erro ao criar o registro."
     );
   }
 };
@@ -129,7 +129,7 @@ const updateById = async (
   } catch (e) {
     console.error(e);
     return new Error(
-      (e as { message: string }).message || "Erro ao atualizar o registro"
+      (e as { message: string }).message || "Erro ao atualizar o registro."
     );
   }
 };
@@ -143,7 +143,7 @@ const deleteById = async (id: number): Promise<void | Error> => {
   } catch (e) {
     console.error(e);
     return new Error(
-      (e as { message: string }).message || "Erro ao apagar o registro"
+      (e as { message: string }).message || "Erro ao apagar o registro."
     );
   }
 };
@@ -153,8 +153,8 @@ const deleteById = async (id: number): Promise<void | Error> => {
 
 export const PessoasService = {
   getAll,
-  getById,
   create,
+  getById,
   updateById,
   deleteById,
 };
