@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { FerramentasDaListagem } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { useEffect, useMemo, useState } from "react";
@@ -9,6 +9,8 @@ import {
 } from "../../shared/services/api/pessoas/PessoasService";
 import { useDebounce } from "../../shared/hooks";
 import {
+  Icon,
+  IconButton,
   LinearProgress,
   Pagination,
   Paper,
@@ -29,6 +31,9 @@ export const ListagemDePessoas: React.FC = () => {
 
   // const { debounce } = useDebounce(3000, false);
   const { debounce } = useDebounce();
+
+  // Navegacao da paginacao
+  const navigate = useNavigate();
 
   // Linhas da tabela
   const [rows, setRows] = useState<IListagemPessoa[]>([]);
@@ -77,6 +82,45 @@ export const ListagemDePessoas: React.FC = () => {
     });
   }, [busca, pagina]);
 
+  // Apagar o registro
+  const handleDelete =
+    // Busca o id da pessoa
+    (id: number) => {
+      if (
+        // Como se fosse um alert, retornando um true ou false
+
+        // Desativar a regra para a variável confirm
+        // eslint-disable-next-line no-restricted-globals
+        confirm("Realmente deseja apagar?")
+      ) {
+        PessoasService.deleteById(id)
+
+          // Quando acontecer a promessa
+          .then((result) => {
+            if (result instanceof Error) {
+              alert(result.message);
+            } else {
+              // Remover o registro da listagem
+              setRows(
+                // State anterior
+                (oldRows) => [
+                  // Spread (operador de espalhamento) permite que um objeto seja expandido em vários elementos individuais
+                  ...oldRows
+                    // Filtrar um registro
+                    .filter(
+                      // Predicate = que vai retornar um booleano dizendo se vai continuar ou nao o registro
+                      (oldRow) =>
+                        // Todas as linhas que o id é diferente do id que foi passado
+                        oldRow.id !== id
+                    ),
+                ]
+              );
+              alert("Registro apagado com sucesso");
+            }
+          });
+      }
+    };
+
   return (
     <LayoutBaseDePagina
       titulo="Listagem de pessoas"
@@ -123,7 +167,18 @@ export const ListagemDePessoas: React.FC = () => {
             {/* Cada linha retorna um table row */}
             {rows.map((row) => (
               <TableRow key={row.id}>
-                <TableCell>Ações</TableCell>
+                <TableCell>
+                  {/* Botões de ações de cada linha */}
+                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
+                    <Icon>delete</Icon>
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    onClick={() => navigate(`/pessoas/detalhe/${row.id}`)}
+                  >
+                    <Icon>edit</Icon>
+                  </IconButton>
+                </TableCell>
                 <TableCell>{row.nomeCompleto}</TableCell>
                 <TableCell>{row.email}</TableCell>
               </TableRow>

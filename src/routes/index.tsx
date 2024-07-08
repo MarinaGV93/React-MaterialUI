@@ -57,13 +57,10 @@ export const AppRoutes = () => {
         }
       />
 
-      <Route
-        path="/pessoas"
-        element={<ListagemDePessoas/>}
-      />
+      <Route path="/pessoas" element={<ListagemDePessoas />} />
 
       {/* Para edição */}
-      {/* <Route path="/pessoas/detalhe/:id" element={<ListagemDePessoas />} /> */}
+      <Route path="/pessoas/detalhe/:id" element={<p>Detalhe</p>} />
 
       {/* Se não encontrar a rota, passa para a outra  */}
 
