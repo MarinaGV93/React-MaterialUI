@@ -7,7 +7,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 // import { useAppThemeContext } from "../shared/contexts";
 import { useDrawerContext } from "../shared/contexts";
 import { useEffect } from "react";
-import { Dashboard, ListagemDePessoas } from "../pages";
+import { Dashboard, DetalheDePessoas, ListagemDePessoas } from "../pages";
 
 // Configurar o pacote DOM
 export const AppRoutes = () => {
@@ -60,10 +60,10 @@ export const AppRoutes = () => {
       <Route path="/pessoas" element={<ListagemDePessoas />} />
 
       {/* Para edição */}
-      <Route path="/pessoas/detalhe/:id" element={<p>Detalhe</p>} />
+      {/* :id = qualquer coisa na barra de endereço */}
+      <Route path="/pessoas/detalhe/:id" element={<DetalheDePessoas />} />
 
       {/* Se não encontrar a rota, passa para a outra  */}
-
       {/*
        * = qualquer coisa na barra de endereço, que não seja as rotas criadas, irá renderizar (navegar) para uma página
        */}

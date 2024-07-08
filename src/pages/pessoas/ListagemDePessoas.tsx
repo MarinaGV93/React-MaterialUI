@@ -140,6 +140,7 @@ export const ListagemDePessoas: React.FC = () => {
               { replace: true }
             )
           }
+          aoClicarBotaoNovo={() => navigate("/pessoas/detalhe/nova")}
         />
       }
     >
