@@ -1,12 +1,6 @@
 {
   "pessoas": [
     {
-      "id": "3",
-      "email": "silvana@hotmail.com",
-      "cidadeId": 1,
-      "nomeCompleto": "Silvana Golao"
-    },
-    {
       "id": "4",
       "email": "luiz@hotmail.com",
       "cidadeId": 1,
