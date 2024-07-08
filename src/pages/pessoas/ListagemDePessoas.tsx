@@ -26,11 +26,13 @@ export const ListagemDePessoas: React.FC = () => {
   // ?.... na URL (Atributos Search)
   // Vai dar como resultado uma lista de alguma, com o 1º item = searchParams 2º item = funções para conseguir dar um SET (resgatar os valores do SearchParams)  coisa
   const [searchParams, setSearchParams] = useSearchParams();
+
   // const { debounce } = useDebounce(3000, false);
   const { debounce } = useDebounce();
 
   // Linhas da tabela
   const [rows, setRows] = useState<IListagemPessoa[]>([]);
+
   // Guardar a quantidade total de registros que tem no BD
   const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
