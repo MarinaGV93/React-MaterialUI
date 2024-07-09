@@ -1,9 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDeDetalhe } from "../../shared/components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
 import { LinearProgress } from "@mui/material";
+import { useForm } from "react-hook-form";
 
 export const DetalheDePessoas: React.FC = () => {
   // Parametro da URL
@@ -17,6 +18,16 @@ export const DetalheDePessoas: React.FC = () => {
   const [nome, setNome] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
+
+  // Registrar os campos de formulário
+  const {
+    register,
+    handleSubmit,
+    // Erros
+    formState: { errors },
+  } = useForm();
+  // Mostra os campos de erro
+  console.log(errors);
 
   useEffect(() => {
     if (id !== "nova") {
@@ -43,8 +54,8 @@ export const DetalheDePessoas: React.FC = () => {
     id,
   ]);
 
-  const handleSave = () => {
-    console.log("save");
+  const onSubmit = (data: any) => {
+    console.log(data);
   };
 
   const handleDelete =
@@ -71,7 +82,6 @@ export const DetalheDePessoas: React.FC = () => {
       }
     };
 
-
   return (
     <LayoutBaseDePagina
       titulo={id === "nova" ? "Nova pessoa" : nome}
@@ -81,16 +91,79 @@ export const DetalheDePessoas: React.FC = () => {
           mostrarBotaoSalvarEFechar
           mostrarBotaoNovo={id !== "nova"}
           mostrarBotaoApagar={id !== "nova"}
-          aoClicarEmSalvar={handleSave}
-          aoClicarEmSalvarEFechar={handleSave}
+          aoClicarEmSalvar={() => handleSubmit(onSubmit)()}
+          aoClicarEmSalvarEFechar={() => handleSubmit(onSubmit)()}
           aoClicaEmApagar={() => handleDelete(Number(id))}
           aoClicarEmVoltar={() => navigate("/pessoas")}
           aoClicarEmNovo={() => navigate("/pessoas/detalhe/nova")}
         />
       }
     >
-      {isLoading && <LinearProgress variant="indeterminate" />}
-      <p>Detalhe de pessoa {id}</p>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <fieldset>
+          <label>
+            <span>Nome</span>
+            <br />
+
+            <input
+              // Mostrar o erro
+              onError={() => console.log("erro")}
+              type="text"
+              placeholder="Nome Completo"
+              // Regristrar o input dentro do useForm, com o 'nome' sendo um objeto
+              {...register(
+                "nome completo",
+                // Regras
+                { required: "Nome obrigatório" }
+              )}
+            />
+            {errors?.nomeCompleto && <span>Nome obrigatório</span>}
+            <br />
+          </label>
+
+          <br />
+
+          <label>
+            <span>Email</span>
+            <br />
+
+            <input
+              type="text"
+              placeholder="Email"
+              // Regristrar o input dentro do useForm, com a 'email' sendo um objeto
+              {...register(
+                "email",
+                // Regras
+                { required: "Email obrigatório" }
+              )}
+            />
+            {errors?.email && <span>Email obrigatório</span>}
+
+            <br />
+          </label>
+
+          <br />
+
+          <label>
+            <span>Cidade</span>
+            <br />
+
+            <input
+              type="text"
+              placeholder="Cidade"
+              // Regristrar o input dentro do useForm, com a 'cidadeId' sendo um objeto
+              {...register(
+                "cidadeId",
+                // Regras
+                { required: "Cidade obrigatória" }
+              )}
+            />
+            {errors?.cidadeId && <span>Cidade obrigatória</span>}
+
+            <br />
+          </label>
+        </fieldset>
+      </form>
     </LayoutBaseDePagina>
   );
 };

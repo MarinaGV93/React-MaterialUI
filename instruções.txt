@@ -54,3 +54,6 @@
 - Facilitar as consultas do BACKEND (JSON server)
     - Instalar
         yarn add axios
+
+- Instalar react hook form para formulários
+    - yarn add react-hook-form
