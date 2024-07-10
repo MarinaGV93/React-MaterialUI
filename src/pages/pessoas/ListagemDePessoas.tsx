@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import {
   IListagemPessoa,
   PessoasService,
-  TPessoasComTotalCount,
 } from "../../shared/services/api/pessoas/PessoasService";
 import { useDebounce } from "../../shared/hooks";
 import {

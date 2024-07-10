@@ -1,9 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDeDetalhe } from "../../shared/components";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
-import { LinearProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 export const DetalheDePessoas: React.FC = () => {
@@ -25,6 +24,7 @@ export const DetalheDePessoas: React.FC = () => {
     handleSubmit,
     // Erros
     formState: { errors },
+    setValue,
   } = useForm();
   // Mostra os campos de erro
   console.log(errors);
@@ -45,6 +45,9 @@ export const DetalheDePessoas: React.FC = () => {
         } else {
           // Setar o nome da pessoa
           setNome(result.nomeCompleto);
+          setValue("nome", result.nomeCompleto);
+          setValue("email", result.email);
+          setValue("cidadeId", result.cidadeId);
           console.log(result);
         }
       });
@@ -52,10 +55,34 @@ export const DetalheDePessoas: React.FC = () => {
   }, [
     // Array de dependencias
     id,
+    // navigate,
   ]);
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = (dados: any) => {
+    setIsLoading(true);
+
+    if (id === "nova") {
+      // Cria um novo registro
+      PessoasService.create(dados).then((result) => {
+        setIsLoading(false);
+
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          // Abrir a tela do novo registro
+          setNome(`${dados.nomeCompleto}`);
+          navigate(`/pessoas/detalhe/${result}`);
+        }
+      });
+    } else {
+      // Atualizar o registro
+      PessoasService.updateById(Number(id), dados).then((result) => {
+        setIsLoading(false);
+        if (result instanceof Error) {
+          alert(result.message);
+        }
+      });
+    }
   };
 
   const handleDelete =
@@ -81,6 +108,9 @@ export const DetalheDePessoas: React.FC = () => {
           });
       }
     };
+
+  // Pegar as informações do input
+  // const addPost = (data: any) => axios.post()
 
   return (
     <LayoutBaseDePagina
@@ -112,7 +142,7 @@ export const DetalheDePessoas: React.FC = () => {
               placeholder="Nome Completo"
               // Regristrar o input dentro do useForm, com o 'nome' sendo um objeto
               {...register(
-                "nome completo",
+                "nomeCompleto",
                 // Regras
                 { required: "Nome obrigatório" }
               )}
@@ -150,7 +180,7 @@ export const DetalheDePessoas: React.FC = () => {
 
             <input
               type="text"
-              placeholder="Cidade"
+              placeholder="Cidade Id"
               // Regristrar o input dentro do useForm, com a 'cidadeId' sendo um objeto
               {...register(
                 "cidadeId",
