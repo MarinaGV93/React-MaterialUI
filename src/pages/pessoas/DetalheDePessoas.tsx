@@ -3,7 +3,16 @@ import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { useEffect, useState } from "react";
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
-import { useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
+import {
+  Box,
+  Grid,
+  Input,
+  LinearProgress,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 export const DetalheDePessoas: React.FC = () => {
   // Parametro da URL
@@ -16,6 +25,10 @@ export const DetalheDePessoas: React.FC = () => {
   // Titulo da Pagina com o nome da pessoa
   const [nome, setNome] = useState("");
 
+  const [email, setEmail] = useState("");
+
+  const [cidadeId, setCidadeId] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
 
   // Registrar os campos de formulário
@@ -25,6 +38,7 @@ export const DetalheDePessoas: React.FC = () => {
     // Erros
     formState: { errors },
     setValue,
+    control,
   } = useForm();
   // Mostra os campos de erro
   console.log(errors);
@@ -43,12 +57,10 @@ export const DetalheDePessoas: React.FC = () => {
           alert(result.message);
           navigate("/pessoas");
         } else {
-          // Setar o nome da pessoa
+          // Setar os dados da pessoa
           setNome(result.nomeCompleto);
-          setValue("nome", result.nomeCompleto);
-          setValue("email", result.email);
-          setValue("cidadeId", result.cidadeId);
-          console.log(result);
+          setEmail(result.email);
+          setCidadeId(result.cidadeId.toString());
         }
       });
     }
@@ -109,9 +121,6 @@ export const DetalheDePessoas: React.FC = () => {
       }
     };
 
-  // Pegar as informações do input
-  // const addPost = (data: any) => axios.post()
-
   return (
     <LayoutBaseDePagina
       titulo={id === "nova" ? "Nova pessoa" : nome}
@@ -129,71 +138,148 @@ export const DetalheDePessoas: React.FC = () => {
         />
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <fieldset>
-          <label>
-            <span>Nome</span>
-            <br />
+      <Form onSubmit={onSubmit} control={control}>
+        <Box
+          margin={1}
+          display="flex"
+          flexDirection="column"
+          component={Paper}
+          variant="outlined"
+          border="none"
+        >
+          {/* Quando tiver mais de 1 grid dentro, será um container */}
+          <Grid container direction={"column"} padding={2} spacing={2}>
+            {isLoading && (
+              <Grid item>
+                <LinearProgress variant="indeterminate" />
+              </Grid>
+            )}
 
-            <input
-              // Mostrar o erro
-              onError={() => console.log("erro")}
-              type="text"
-              placeholder="Nome Completo"
-              // Regristrar o input dentro do useForm, com o 'nome' sendo um objeto
-              {...register(
-                "nomeCompleto",
-                // Regras
-                { required: "Nome obrigatório" }
-              )}
-            />
-            {errors?.nomeCompleto && <span>Nome obrigatório</span>}
-            <br />
-          </label>
+            <Grid item>
+              <Typography variant="h6">Geral</Typography>
+            </Grid>
+            {/* Como se fosse uma linha */}
+            <Grid container item direction="row" spacing={2}>
+              {/* Item dentro da linha */}
+              <Grid
+                item
+                // Menor tamanho da tela
+                // Quando a tela for maior que 0px
+                xs={12}
+                // Tamanho pequeno da tela
+                // Quando a tela for maior que 600px
+                sm={12}
+                // Tamanho médio da tela
+                // Quando a tela for maior que 900px
+                md={6}
+                // Tamanho grande da tela
+                // Quando a tela for maior que 1200px
+                lg={4}
+                // Maior tamanho da tela
+                // Quando a tela for maior que 1536px
+                xl={2}
+              >
+                <TextField
+                  fullWidth
+                  // Mostrar o erro
+                  onError={() => console.log("erro")}
+                  type="text"
+                  label="Nome Completo"
+                  // Regristrar dentro do useForm, com o 'nome' sendo um objeto
+                  {...register(
+                    "nomeCompleto",
+                    // Regras
+                    { required: "Nome obrigatório" }
+                  )}
+                  value={nome}
+                  onChange={(
+                    // Evento
+                    e
+                  ) => setNome(e.target.value)}
+                  disabled={isLoading}
+                />
+                {errors?.nomeCompleto && <span>Nome obrigatório</span>}
+              </Grid>
+            </Grid>
 
-          <br />
+            {/* Como se fosse uma linha */}
+            <Grid container item direction="row" spacing={2}>
+              {/* Item dentro da linha */}
+              <Grid
+                item
+                // Menor tamanho da tela
+                // Quando a tela for maior que 0px
+                xs={12}
+                // Tamanho pequeno da tela
+                // Quando a tela for maior que 600px
+                sm={12}
+                // Tamanho médio da tela
+                // Quando a tela for maior que 900px
+                md={6}
+                // Tamanho grande da tela
+                // Quando a tela for maior que 1200px
+                lg={4}
+                // Maior tamanho da tela
+                // Quando a tela for maior que 1536px
+                xl={2}
+              >
+                <TextField
+                  fullWidth
+                  type="text"
+                  label="Email"
+                  // Regristrar dentro do useForm, com a 'email' sendo um objeto
+                  {...register(
+                    "email",
+                    // Regras
+                    { required: "Email obrigatório" }
+                  )}
+                  value={email}
+                  disabled={isLoading}
+                />
+                {errors?.email && <span>Email obrigatório</span>}
+              </Grid>
+            </Grid>
 
-          <label>
-            <span>Email</span>
-            <br />
-
-            <input
-              type="text"
-              placeholder="Email"
-              // Regristrar o input dentro do useForm, com a 'email' sendo um objeto
-              {...register(
-                "email",
-                // Regras
-                { required: "Email obrigatório" }
-              )}
-            />
-            {errors?.email && <span>Email obrigatório</span>}
-
-            <br />
-          </label>
-
-          <br />
-
-          <label>
-            <span>Cidade</span>
-            <br />
-
-            <input
-              type="text"
-              placeholder="Cidade Id"
-              // Regristrar o input dentro do useForm, com a 'cidadeId' sendo um objeto
-              {...register(
-                "cidadeId",
-                // Regras
-                { required: "Cidade obrigatória" }
-              )}
-            />
-            {errors?.cidadeId && <span>Cidade obrigatória</span>}
-
-            <br />
-          </label>
-        </fieldset>
-      </form>
+            {/* Como se fosse uma linha */}
+            <Grid container item direction="row" spacing={2}>
+              {/* Item dentro da linha */}
+              <Grid
+                item
+                // Menor tamanho da tela
+                // Quando a tela for maior que 0px
+                xs={12}
+                // Tamanho pequeno da tela
+                // Quando a tela for maior que 600px
+                sm={12}
+                // Tamanho médio da tela
+                // Quando a tela for maior que 900px
+                md={6}
+                // Tamanho grande da tela
+                // Quando a tela for maior que 1200px
+                lg={4}
+                // Maior tamanho da tela
+                // Quando a tela for maior que 1536px
+                xl={2}
+              >
+                <TextField
+                  fullWidth
+                  type="text"
+                  label="Cidade"
+                  // Regristrar dentro do useForm, com a 'cidadeId' sendo um objeto
+                  {...register(
+                    "cidadeId",
+                    // Regras
+                    { required: "Cidade obrigatória" }
+                  )}
+                  value={cidadeId}
+                  disabled={isLoading}
+                />
+                {errors?.cidadeId && <span>Cidade obrigatória</span>}
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
+      </Form>
     </LayoutBaseDePagina>
   );
 };
