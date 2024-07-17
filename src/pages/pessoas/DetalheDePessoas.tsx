@@ -63,11 +63,14 @@ export const DetalheDePessoas: React.FC = () => {
           setCidadeId(result.cidadeId.toString());
         }
       });
+    } else {
+      setNome("");
+      setEmail("");
+      setCidadeId("");
     }
   }, [
     // Array de dependencias
     id,
-    // navigate,
   ]);
 
   const onSubmit = (dados: any) => {
@@ -234,6 +237,10 @@ export const DetalheDePessoas: React.FC = () => {
                     { required: "Email obrigatório" }
                   )}
                   value={email}
+                  onChange={(
+                    // Evento
+                    e
+                  ) => setEmail(e.target.value)}
                   disabled={isLoading}
                 />
                 {errors?.email && <span>Email obrigatório</span>}
@@ -272,6 +279,10 @@ export const DetalheDePessoas: React.FC = () => {
                     { required: "Cidade obrigatória" }
                   )}
                   value={cidadeId}
+                  onChange={(
+                    // Evento
+                    e
+                  ) => setCidadeId(e.target.value)}
                   disabled={isLoading}
                 />
                 {errors?.cidadeId && <span>Cidade obrigatória</span>}
