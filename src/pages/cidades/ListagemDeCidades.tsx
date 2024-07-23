@@ -3,9 +3,9 @@ import { FerramentasDaListagem } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { useEffect, useMemo, useState } from "react";
 import {
-  IListagemPessoa,
-  PessoasService,
-} from "../../shared/services/api/pessoas/PessoasService";
+  IListagemCidade,
+  CidadesService,
+} from "../../shared/services/api/cidades/CidadesService";
 import { useDebounce } from "../../shared/hooks";
 import {
   Icon,
@@ -23,7 +23,7 @@ import {
 } from "@mui/material";
 import { Environment } from "../../shared/environment";
 
-export const ListagemDePessoas: React.FC = () => {
+export const ListagemDeCidades: React.FC = () => {
   // ?.... na URL (Atributos Search)
   // Vai dar como resultado uma lista de alguma, com o 1º item = searchParams 2º item = funções para conseguir dar um SET (resgatar os valores do SearchParams)  coisa
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,7 +35,7 @@ export const ListagemDePessoas: React.FC = () => {
   const navigate = useNavigate();
 
   // Linhas da tabela
-  const [rows, setRows] = useState<IListagemPessoa[]>([]);
+  const [rows, setRows] = useState<IListagemCidade[]>([]);
 
   // Guardar a quantidade total de registros que tem no BD
   const [isLoading, setIsLoading] = useState(true);
@@ -58,7 +58,7 @@ export const ListagemDePessoas: React.FC = () => {
     // Impedir que as listagens fiquem consultando o backend o tempo todo
     debounce(() => {
       // Reexecutar a consulta para o backend, dando uma resposta, que pode demorar
-      PessoasService.getAll(pagina, busca)
+      CidadesService.getAll(pagina, busca)
 
         // Quando retornar
         // Pega o result
@@ -71,7 +71,7 @@ export const ListagemDePessoas: React.FC = () => {
             // Result é só erro
             alert(result.message);
           } else {
-            // Result é só pessoas com total count
+            // Result é só cidades com total count
             console.log(result);
 
             setTotalCount(result.totalCount);
@@ -83,7 +83,7 @@ export const ListagemDePessoas: React.FC = () => {
 
   // Apagar o registro
   const handleDelete =
-    // Busca o id da pessoa
+    // Busca o id da cidade
     (id: number) => {
       if (
         // Como se fosse um alert, retornando um true ou false
@@ -92,7 +92,7 @@ export const ListagemDePessoas: React.FC = () => {
         // eslint-disable-next-line no-restricted-globals
         confirm("Realmente deseja apagar?")
       ) {
-        PessoasService.deleteById(id)
+        CidadesService.deleteById(id)
 
           // Quando acontecer a promessa
           .then((result) => {
@@ -122,7 +122,7 @@ export const ListagemDePessoas: React.FC = () => {
 
   return (
     <LayoutBaseDePagina
-      titulo="Listagem de pessoas"
+      titulo="Listagem de cidades"
       barraDeFerramentas={
         <FerramentasDaListagem
           mostrarInputBusca
@@ -139,7 +139,7 @@ export const ListagemDePessoas: React.FC = () => {
               { replace: true }
             )
           }
-          aoClicarBotaoNovo={() => navigate("/pessoas/detalhe/nova")}
+          aoClicarBotaoNovo={() => navigate("/cidades/detalhe/nova")}
         />
       }
     >
@@ -157,8 +157,7 @@ export const ListagemDePessoas: React.FC = () => {
             <TableRow>
               {/* Coluna */}
               <TableCell width={100}>Ações</TableCell>
-              <TableCell>Nome Completo</TableCell>
-              <TableCell>Email</TableCell>
+              <TableCell>Nome</TableCell>
             </TableRow>
           </TableHead>
 
@@ -174,13 +173,12 @@ export const ListagemDePessoas: React.FC = () => {
                   </IconButton>
                   <IconButton
                     size="small"
-                    onClick={() => navigate(`/pessoas/detalhe/${row.id}`)}
+                    onClick={() => navigate(`/cidades/detalhe/${row.id}`)}
                   >
                     <Icon>edit</Icon>
                   </IconButton>
                 </TableCell>
-                <TableCell>{row.nomeCompleto}</TableCell>
-                <TableCell>{row.email}</TableCell>
+                <TableCell>{row.nome}</TableCell>
               </TableRow>
             ))}
           </TableBody>
