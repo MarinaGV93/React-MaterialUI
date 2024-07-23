@@ -7,12 +7,42 @@ import { Form, useForm } from "react-hook-form";
 import {
   Box,
   Grid,
-  Input,
   LinearProgress,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
+import * as yup from "yup";
+
+interface IFormData {
+  email: string;
+  cidadeId: number;
+  nomeCompleto: string;
+}
+
+//  Esquema de validação
+const formValidationSchema: yup.Schema<IFormData> = yup
+  // Objetos
+  .object()
+  // Todos os atributos que terá dentro do objeto que vai mandar para o backend
+  .shape({
+    cidadeId: yup
+      // Numero
+      .number()
+      .required("Cidade obrigatória"),
+    email: yup
+      .string()
+      .required("Email obrigatório")
+      // Email deve ter um formato correto
+      .email(),
+    nomeCompleto: yup
+      // Texto
+      .string()
+      // Obrigatório
+      .required("Nome obrigatório")
+      // Mínimo de 3 caracteres
+      .min(3, "O nome deve conter pelo menos 3 caracteres"),
+  });
 
 export const DetalheDePessoas: React.FC = () => {
   // Parametro da URL
@@ -31,14 +61,16 @@ export const DetalheDePessoas: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [close, setClose] = useState(false);
+
   // Registrar os campos de formulário
   const {
     register,
     handleSubmit,
     // Erros
     formState: { errors },
-    setValue,
     control,
+    setError,
   } = useForm();
   // Mostra os campos de erro
   console.log(errors);
@@ -74,30 +106,68 @@ export const DetalheDePessoas: React.FC = () => {
   ]);
 
   const onSubmit = (dados: any) => {
-    setIsLoading(true);
+    // Validar os dados
+    formValidationSchema
+      .validate(
+        dados,
+        // Valida todos os campos e mostra os erros para todos
+        { abortEarly: false }
+      )
+      // Se der tudo certo
+      .then(
+        (
+          // Recebe os dados validados (valor padrao se o campo tiver em branco)
+          dadosValidados
+        ) => {
+          setIsLoading(true);
 
-    if (id === "nova") {
-      // Cria um novo registro
-      PessoasService.create(dados).then((result) => {
-        setIsLoading(false);
+          if (id === "nova") {
+            // Cria um novo registro
+            PessoasService.create(dadosValidados).then((result) => {
+              setIsLoading(false);
 
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          // Abrir a tela do novo registro
-          setNome(`${dados.nomeCompleto}`);
-          navigate(`/pessoas/detalhe/${result}`);
+              if (result instanceof Error) {
+                alert(result.message);
+              } else {
+                if (!close) {
+                  navigate("/pessoas");
+                } else {
+                  // Abrir a tela do novo registro
+                  setNome(`${dados.nomeCompleto}`);
+                  navigate(`/pessoas/detalhe/${result}`);
+                }
+              }
+            });
+          } else {
+            // Atualizar o registro
+            PessoasService.updateById(Number(id), {
+              id: Number(id),
+              ...dadosValidados,
+            }).then((result) => {
+              setIsLoading(false);
+              if (result instanceof Error) {
+                alert(result.message);
+              } else {
+                if (!close) {
+                  navigate("/pessoas");
+                }
+              }
+            });
+          }
         }
+      )
+      // Se der errado
+      .catch((errors: yup.ValidationError) => {
+        const validationErrors: { [key: string]: string } = {};
+
+        errors.inner.forEach((error) => {
+          if (!error.path) return;
+          validationErrors[error.path] = error.message;
+        });
+        setError("dados", {
+          type: "validation",
+        });
       });
-    } else {
-      // Atualizar o registro
-      PessoasService.updateById(Number(id), dados).then((result) => {
-        setIsLoading(false);
-        if (result instanceof Error) {
-          alert(result.message);
-        }
-      });
-    }
   };
 
   const handleDelete =
@@ -189,11 +259,9 @@ export const DetalheDePessoas: React.FC = () => {
                   type="text"
                   label="Nome Completo"
                   // Regristrar dentro do useForm, com o 'nome' sendo um objeto
-                  {...register(
-                    "nomeCompleto",
-                    // Regras
-                    { required: "Nome obrigatório" }
-                  )}
+                  {...register("nomeCompleto", {
+                    required: "Nome obrigatório",
+                  })}
                   value={nome}
                   onChange={(
                     // Evento
@@ -201,7 +269,11 @@ export const DetalheDePessoas: React.FC = () => {
                   ) => setNome(e.target.value)}
                   disabled={isLoading}
                 />
-                {errors?.nomeCompleto && <span>Nome obrigatório</span>}
+                {errors?.nomeCompleto && (
+                  <Typography color="error">
+                    Nome completo obrigatório
+                  </Typography>
+                )}
               </Grid>
             </Grid>
 
@@ -231,11 +303,9 @@ export const DetalheDePessoas: React.FC = () => {
                   type="text"
                   label="Email"
                   // Regristrar dentro do useForm, com a 'email' sendo um objeto
-                  {...register(
-                    "email",
-                    // Regras
-                    { required: "Email obrigatório" }
-                  )}
+                  {...register("email", {
+                    required: "Email obrigatório",
+                  })}
                   value={email}
                   onChange={(
                     // Evento
@@ -243,7 +313,9 @@ export const DetalheDePessoas: React.FC = () => {
                   ) => setEmail(e.target.value)}
                   disabled={isLoading}
                 />
-                {errors?.email && <span>Email obrigatório</span>}
+                {errors?.email && (
+                  <Typography color="error">Email obrigatório</Typography>
+                )}
               </Grid>
             </Grid>
 
@@ -273,11 +345,9 @@ export const DetalheDePessoas: React.FC = () => {
                   type="text"
                   label="Cidade"
                   // Regristrar dentro do useForm, com a 'cidadeId' sendo um objeto
-                  {...register(
-                    "cidadeId",
-                    // Regras
-                    { required: "Cidade obrigatória" }
-                  )}
+                  {...register("cidadeId", {
+                    required: "Cidade obrigatória",
+                  })}
                   value={cidadeId}
                   onChange={(
                     // Evento
@@ -285,7 +355,9 @@ export const DetalheDePessoas: React.FC = () => {
                   ) => setCidadeId(e.target.value)}
                   disabled={isLoading}
                 />
-                {errors?.cidadeId && <span>Cidade obrigatória</span>}
+                {errors?.cidadeId && (
+                  <Typography color="error">Cidade obrigatória</Typography>
+                )}
               </Grid>
             </Grid>
           </Grid>
