@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
 import { Form, useForm } from "react-hook-form";
 import {
+  Autocomplete,
   Box,
   Grid,
   LinearProgress,
@@ -13,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import * as yup from "yup";
+import { AutoCompleteCidade } from "./components/AutoCompleteCidades";
 
 interface IFormData {
   email: string;
@@ -106,6 +108,7 @@ export const DetalheDePessoas: React.FC = () => {
   ]);
 
   const onSubmit = (dados: any) => {
+    console.log(dados);
     // Validar os dados
     formValidationSchema
       .validate(
@@ -163,9 +166,6 @@ export const DetalheDePessoas: React.FC = () => {
         errors.inner.forEach((error) => {
           if (!error.path) return;
           validationErrors[error.path] = error.message;
-        });
-        setError("dados", {
-          type: "validation",
         });
       });
   };
@@ -340,7 +340,7 @@ export const DetalheDePessoas: React.FC = () => {
                 // Quando a tela for maior que 1536px
                 xl={2}
               >
-                <TextField
+                {/* <TextField
                   fullWidth
                   type="text"
                   label="Cidade"
@@ -352,12 +352,13 @@ export const DetalheDePessoas: React.FC = () => {
                   onChange={(
                     // Evento
                     e
-                  ) => setCidadeId(e.target.value)}
-                  disabled={isLoading}
-                />
+                    ) => setCidadeId(e.target.value)}
+                    disabled={isLoading}
+                    /> */}
                 {errors?.cidadeId && (
                   <Typography color="error">Cidade obrigatória</Typography>
                 )}
+                <AutoCompleteCidade />
               </Grid>
             </Grid>
           </Grid>

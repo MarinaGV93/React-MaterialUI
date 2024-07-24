@@ -77,6 +77,30 @@
     {
       "id": "617d",
       "nome": "São Paulo"
+    },
+    {
+      "id": "56e1",
+      "nome": "Guarulhos"
+    },
+    {
+      "id": "abc1",
+      "nome": "Mauá"
+    },
+    {
+      "id": "0f1b",
+      "nome": "Cotia"
+    },
+    {
+      "id": "fe92",
+      "nome": "Diadema"
+    },
+    {
+      "id": "12bd",
+      "nome": "Tiradentes"
+    },
+    {
+      "id": "b870",
+      "nome": "Tiradentes"
     }
   ]
 }
