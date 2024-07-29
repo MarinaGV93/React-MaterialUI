@@ -206,6 +206,8 @@ export const ListagemDePessoas: React.FC = () => {
               </TableRow>
             )}
 
+            {/* TODO: Arrumar a logica de paginação de pessoas **/}
+
             {totalCount > Environment.LIMITE_DE_LINHAS && (
               <TableRow>
                 <TableCell colSpan={3}>

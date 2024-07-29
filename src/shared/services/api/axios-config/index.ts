@@ -5,6 +5,12 @@ import { Environment } from "../../../environment";
 // Criar instancias padroes passando as configurações
 const Api = axios.create({
   baseURL: Environment.URL_BASE,
+  // Mandar em cada requisição o token de autenticação
+  // headers: {
+  //   Authorization: `Bearer ${JSON.parse(
+  //     localStorage.getItem("APP_ACCESS_TOKEN") || ""
+  //   )}`,
+  // },
 });
 
 // interceptors (interceptadores):  interceptar solicitações ou respostas antes que elas sejam tratadas

@@ -1,6 +1,7 @@
 import {
   createContext,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useState,
@@ -33,6 +34,8 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   // Se colocar uma tipagem e nao informa nenhum parametro, o state vai ser a tipagem ou undefined
   const [accessToken, setAccessToken] = useState<string>();
 
+  // TODO: Verificar o token automaticamente
+
   // Resgatar o token se fechar o navegador para nao fazer login novamente
   // Tem como fazer uma forma mais segura de guardar o token
   useEffect(() => {
@@ -41,9 +44,10 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
       LOCAL_STORAGE_KEY_ACCESS_TOKEN
     );
     if (accessToken) {
-      setAccessToken(JSON.parse(accessToken));
+      // setAccessToken(JSON.parse(accessToken));
+      setAccessToken(accessToken);
     } else {
-      setAccessToken(undefined);
+      setAccessToken("");
     }
   }, []);
 
@@ -106,3 +110,6 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+// Acessar o contexto de fora do contexto (desse arquivo)
+export const useAuthContext = () => useContext(AuthContext);

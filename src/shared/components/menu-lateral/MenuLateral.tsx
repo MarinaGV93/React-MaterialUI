@@ -12,7 +12,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useDrawerContext } from "../../contexts";
+import { useAuthContext, useDrawerContext } from "../../contexts";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 import { useAppThemeContext } from "./../../contexts/ThemeContext";
 
@@ -94,6 +94,9 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
 
   // Para ferramentas do tema
   const { toggleTheme } = useAppThemeContext();
+
+  // Sair
+  const { logout } = useAuthContext();
   return (
     <>
       {/* Menu lateral */}
@@ -161,6 +164,13 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
                   <Icon>dark_mode</Icon>
                 </ListItemIcon>
                 <ListItemText primary="Alternar tema" />
+              </ListItemButton>
+
+              <ListItemButton onClick={logout}>
+                <ListItemIcon>
+                  <Icon>logout</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Sair" />
               </ListItemButton>
             </List>
           </Box>

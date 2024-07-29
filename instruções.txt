@@ -42,7 +42,7 @@
         - Com o método de GET
             URL do endpoint http://localhost:3333/pessoas
 
-        - Se tiver algo noo array
+        - Se tiver algo no array
             Passando / e o numero do id http://localhost:3333/pessoas/1
     - Adicionar como script
         - Em scripts no arquivo package.json para automatizar

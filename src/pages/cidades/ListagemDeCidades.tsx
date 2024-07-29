@@ -204,6 +204,8 @@ export const ListagemDeCidades: React.FC = () => {
               </TableRow>
             )}
 
+            {/* TODO: Arrumar a logica de paginação de cidades **/}
+
             {totalCount > Environment.LIMITE_DE_LINHAS && (
               <TableRow>
                 <TableCell colSpan={3}>
